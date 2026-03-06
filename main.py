@@ -2,7 +2,7 @@ from docx import Document
 
 
 #Abre documento
-doc = Document('files/060326_Nicolas_Aires_Curriculo_Backend_ATS.docx')
+doc = Document('files/Seu_curriculo_aqui.docx')
 
 #Acessa propriedades principais
 props = doc.core_properties
