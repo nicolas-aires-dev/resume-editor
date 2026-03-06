@@ -2,7 +2,7 @@ from docx import Document
 
 
 #Abre documento
-doc = Document('Seu_Documento_Aqui.docx')
+doc = Document('files/060326_Nicolas_Aires_Curriculo_Backend_ATS.docx')
 
 #Acessa propriedades principais
 props = doc.core_properties
@@ -17,10 +17,10 @@ print(f"Categoria: {props.category}") #string – A categorization of the conten
 
 
 #Altera dados
-props.title = 'Titulo do documento'
-props.author = 'Nome do autor'
-props.keywords = 'Aqui, Ficam, As, Palavras, Chave, Separadas, Por, Virgulas, De, Até, 255, Caractéres'
-props.comments = "Resumo profisssional de até 255 caractéres"
+props.title = 'Seu titulo aqui'#Titulo da vaga
+props.author = 'Seu nome aqui'#Seu nome inteiro
+props.keywords = 'Keywords aqui.' #Keywords separadas em virgulas baseadas na vaga (Até 255 caractéres)
+props.comments = "Resumo profissional aqui." #Seu resumo profissional com base na vaga (Até 255 caracteres)
 props.category = "curriculo"
 
 print(15*'#', 'Depois', 15*'#')
@@ -30,4 +30,4 @@ print(f"Palavras-chave: {props.keywords}")
 print(f"Descrição: {props.comments}")
 print(f"Categoria: {props.category}")
 
-doc.save('Seu_Documento_Aqui.docx')
+doc.save('files/Seu_curriculo_aqui.docx')
