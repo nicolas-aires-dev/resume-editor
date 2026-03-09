@@ -2,7 +2,7 @@ from docx import Document
 
 
 #Abre documento
-doc = Document('files/Seu_curriculo_aqui.docx')
+doc = Document('./files/Seu_curriculo_aqui.docx')
 
 #Acessa propriedades principais
 props = doc.core_properties
@@ -30,4 +30,4 @@ print(f"Palavras-chave: {props.keywords}")
 print(f"Descrição: {props.comments}")
 print(f"Categoria: {props.category}")
 
-doc.save('files/Seu_curriculo_aqui.docx')
+doc.save('./files/Seu_curriculo_aqui.docx')
