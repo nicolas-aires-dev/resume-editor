@@ -13,10 +13,20 @@ def processar_docx(caminho):
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.title("Resume Editor")
-        self.geometry("500x300")
+        self.title("App com múltiplas telas")
+        self.geometry("600x400")
+        self.tela_atual = None
+        self.mostrar_tela_inicial()
 
-        TelaInicial(self, on_submit=processar_docx)
+    def mostrar_tela_inicial(self):
+        if self.tela_atual:
+            self.tela_atual.destroy()
+        self.tela_atual = TelaInicial(self, on_submit=self.mostrar_tela_docx)
+
+    def mostrar_tela_docx(self, caminho):
+        if self.tela_atual:
+            self.tela_atual.destroy()
+        self.tela_atual = TelaDocx(self, caminho)
 
 if __name__ == "__main__":
     app = App()
