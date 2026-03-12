@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import filedialog
 from docx import Document
+from PIL import Image
 
 
 class TelaInicial(ctk.CTkFrame):
@@ -28,33 +29,74 @@ class TelaInicial(ctk.CTkFrame):
         
      
 class TelaDocx(ctk.CTkFrame):
-    def __init__(self, master, caminho):
+    def __init__(self, master, path):
         super().__init__(master)
         self.pack(padx=20, pady=20, fill='both', expand=True)
 
-        doc = Document(caminho)
-        props = doc.core_properties
+        #Open docs
+        self.doc = Document(path)
+        self.path = path
+        props = self.doc.core_properties
 
-        #Metadata
-        lbl_title = ctk.CTkLabel(self, text=f"Título: {props.title}", anchor="w", justify="left", wraplength=400)
-        lbl_title.pack(fill="x", padx=10, pady=5)
+        # Title
+        lbl_title = ctk.CTkLabel(self, text="Título:")
+        lbl_title.grid(row=0, column=0, sticky="w", padx=5, pady=5)
 
-        lbl_author = ctk.CTkLabel(self, text=f"Autor: {props.author}", anchor="w", justify="left", wraplength=400)
-        lbl_author.pack(fill="x", padx=10, pady=5)
+        self.entry_title = ctk.CTkEntry(self, width=400)
+        self.entry_title.insert(0, props.title)
+        self.entry_title.grid(row=0, column=1, padx=5, pady=5)
 
-        lbl_keywords = ctk.CTkLabel(self, text=f"Palavras-chave: {props.keywords}", anchor="w", justify="left", wraplength=400)
-        lbl_keywords.pack(fill="x", padx=10, pady=5)
+        # Author
+        lbl_author = ctk.CTkLabel(self, text="Autor:")
+        lbl_author.grid(row=1, column=0, sticky="w", padx=5, pady=5)
 
-        lbl_description = ctk.CTkLabel(self, text=f"Descrição: {props.comments}", anchor="w", justify="left", wraplength=400)
-        lbl_description.pack(fill="x", padx=10, pady=5)
+        self.entry_author = ctk.CTkEntry(self, width=400)
+        self.entry_author.insert(0, props.author)
+        self.entry_author.grid(row=1, column=1, padx=5, pady=5)
 
-        lbl_category = ctk.CTkLabel(self, text=f"Titúlo: {props.category}", anchor="w", justify="left", wraplength=400)
-        lbl_category.pack(fill="x", padx=10, pady=5)
+        # Keywords
+        lbl_keywords = ctk.CTkLabel(self, text="Palavras-chave:")
+        lbl_keywords.grid(row=2, column=0, sticky="w", padx=5, pady=5)
 
-        #Botão de voltar
+        self.entry_keywords = ctk.CTkEntry(self, width=400)
+        self.entry_keywords.insert(0, props.keywords)
+        self.entry_keywords.grid(row=2, column=1, padx=5, pady=5)
+
+        # Description
+        lbl_description = ctk.CTkLabel(self, text="Descrição:")
+        lbl_description.grid(row=3, column=0, sticky="w", padx=5, pady=5)
+
+        self.entry_description = ctk.CTkEntry(self, width=400)
+        self.entry_description.insert(0, props.comments)
+        self.entry_description.grid(row=3, column=1, padx=5, pady=5)
+
+        # Category
+        lbl_category = ctk.CTkLabel(self, text="Categoria:")
+        lbl_category.grid(row=4, column=0, sticky="w", padx=5, pady=5)
+
+        self.entry_category = ctk.CTkEntry(self, width=400)
+        self.entry_category.insert(0, props.category)
+        self.entry_category.grid(row=4, column=1, padx=5, pady=5)
+
+        # Botão salvar
+        btn_salvar = ctk.CTkButton(self, text="Salvar alterações", command=self.salvar_props)
+        btn_salvar.grid(row=5, column=0, columnspan=2, pady=10, sticky="w")
+
+        # Botão voltar
         btn_voltar = ctk.CTkButton(self, text="Voltar", command=lambda: master.mostrar_tela_inicial())
-        btn_voltar.pack(pady=20)
+        btn_voltar.grid(row=6, column=0, columnspan=2, pady=10, sticky="w")
 
+
+    def salvar_props(self):
+        props = self.doc.core_properties
+        props.title = self.entry_title.get()
+        props.author = self.entry_author.get()
+        props.keywords = self.entry_keywords.get()
+        props.comments = self.entry_description.get()
+        props.category = self.entry_category.get()
+
+        #Save doc
+        self.doc.save(self.path)
 
 class App(ctk.CTk):
     def __init__(self):
@@ -62,6 +104,7 @@ class App(ctk.CTk):
         self.title("Resume Editor")
         self.geometry("600x400")
         self.tela_atual = None
+        self.resizable(False, False)  # trava a dimensão
         self.mostrar_tela_inicial()
 
     def mostrar_tela_inicial(self):
@@ -69,10 +112,10 @@ class App(ctk.CTk):
             self.tela_atual.destroy()
         self.tela_atual = TelaInicial(self, on_submit=self.mostrar_tela_docx)
 
-    def mostrar_tela_docx(self, caminho):
+    def mostrar_tela_docx(self, path):
         if self.tela_atual:
             self.tela_atual.destroy()
-        self.tela_atual = TelaDocx(self, caminho)
+        self.tela_atual = TelaDocx(self, path)
 
 if __name__ == "__main__":
     app = App()
