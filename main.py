@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import filedialog
 from docx import Document
-from PIL import Image
+from PIL import Image, ImageTk
 
 
 class TelaInicial(ctk.CTkFrame):
@@ -106,6 +106,8 @@ class App(ctk.CTk):
         self.tela_atual = None
         self.resizable(False, False)  # trava a dimensão
         self.mostrar_tela_inicial()
+
+        self.iconbitmap("common/logos/Logo.ico")
 
     def mostrar_tela_inicial(self):
         if self.tela_atual:
